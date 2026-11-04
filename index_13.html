@@ -1,0 +1,481 @@
+<!doctype html><html><head><meta charset=utf8><meta name="robots" content="noindex,nofollow"><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>ISD Shared Salaries</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap">
+<style>
+/* Layout: ISD light canvas, white cards; summary → method → units → keys → bases/departments → components → register */
+:root {
+  --ink: #111111;
+  --ink-2: #4D4D49;
+  --ink-3: #6A6A66;
+  --ink-4: #8E8E8A;
+  --canvas: #FAFAFA;
+  --card: #FFFFFF;
+  --subtle: #F5F5F4;
+  --line: #ECECEB;
+  --line-2: #E2E2E0;
+  --line-3: #B8B8B4;
+  --red: #E3202A;
+  --yellow: #F5B014;
+  --yellow-50: #FFF8E6;
+  --own: #111111;
+  --shared: #E3202A;
+  --font: 'Montserrat', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --r-md: 12px; --r-lg: 16px; --r-xl: 24px; --pill: 999px;
+  --sh-sm: 0 2px 6px rgba(17,17,17,.05), 0 1px 2px rgba(17,17,17,.04);
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  color-scheme: light;
+}
+* { box-sizing: border-box; }
+body { background: var(--canvas); color: var(--ink); font-family: var(--font); font-size: 14px; line-height: 1.45; -webkit-font-smoothing: antialiased; }
+.wrap { max-width: 1320px; margin: 0 auto; padding-block: 28px 64px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); display: flex; flex-direction: column; gap: 24px; }
+.num { font-variant-numeric: tabular-nums; }
+.eyebrow { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .16em; color: var(--ink-4); }
+
+/* header */
+.hdr { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
+.hdr img { width: 64px; height: auto; flex: none; }
+.hdr-text { flex: 1 1 320px; min-width: 0; display: flex; flex-direction: column; gap: 6px; }
+.hdr h1 { margin: 0; font-size: clamp(26px, 3.6vw, 40px); font-weight: 800; letter-spacing: -.025em; line-height: 1.1; text-wrap: balance; }
+.lead { margin: 0; max-width: 75ch; color: var(--ink-2); font-size: 15px; }
+.lead b { color: var(--ink); font-weight: 700; }
+.period { flex: none; align-self: flex-start; padding: 8px 14px; border-radius: var(--pill); border: 1.5px solid var(--line-2); font-size: 12px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; background: var(--card); }
+
+/* KPI */
+.kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); gap: 16px; }
+.kpi { background: var(--card); border-radius: var(--r-lg); box-shadow: var(--sh-sm); padding: 20px 22px; display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.kpi .v { font-size: 30px; font-weight: 800; letter-spacing: -.02em; line-height: 1.1; }
+.kpi .v small { font-size: 14px; font-weight: 600; color: var(--ink-3); letter-spacing: 0; margin-left: 4px; }
+.kpi .s { font-size: 13px; color: var(--ink-3); }
+.kpi.dark { background: var(--ink); color: #fff; }
+.kpi.dark .eyebrow { color: var(--yellow); }
+.kpi.dark .s, .kpi.dark .v small { color: #B8B8B4; }
+
+/* cards */
+.card { background: var(--card); border-radius: var(--r-xl); box-shadow: var(--sh-sm); padding: 24px; display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+.card-h { display: flex; justify-content: space-between; align-items: flex-end; gap: 12px 24px; flex-wrap: wrap; }
+.card-h > div { min-width: 0; display: flex; flex-direction: column; gap: 4px; }
+.card h2 { margin: 0; font-size: 20px; font-weight: 700; letter-spacing: -.01em; }
+.note { margin: 0; color: var(--ink-3); font-size: 13px; max-width: 80ch; }
+.grid2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 460px), 1fr)); gap: 24px; }
+
+/* method */
+.steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr)); gap: 16px; counter-reset: st; }
+.step { border: 1px solid var(--line); border-radius: var(--r-lg); padding: 18px; display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.step .k { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 15px; }
+.step .k::before { counter-increment: st; content: counter(st); width: 26px; height: 26px; border-radius: var(--pill); background: var(--ink); color: #fff; display: inline-grid; place-items: center; font-size: 12px; font-weight: 700; flex: none; }
+.step p { margin: 0; color: var(--ink-2); font-size: 13px; }
+.step code { font-family: var(--font); font-weight: 700; color: var(--ink); background: var(--yellow-50); border-radius: 6px; padding: 1px 6px; white-space: nowrap; }
+.example { border-radius: var(--r-lg); background: var(--subtle); padding: 18px; display: flex; flex-direction: column; gap: 10px; }
+.example h3 { margin: 0; font-size: 14px; font-weight: 700; }
+.example .tbox { background: var(--card); }
+
+/* legend + chips */
+.legend { display: flex; gap: 16px; flex-wrap: wrap; font-size: 12px; color: var(--ink-3); }
+.legend span { display: inline-flex; align-items: center; gap: 6px; }
+.sw { width: 10px; height: 10px; border-radius: 3px; display: inline-block; }
+.chips { display: flex; gap: 8px; flex-wrap: wrap; }
+.chip { font: inherit; font-size: 12px; font-weight: 600; padding: 7px 12px; border-radius: var(--pill); border: 1.5px solid var(--line-2); background: var(--card); color: var(--ink); cursor: pointer; transition: border-color 160ms var(--ease), background 160ms var(--ease); }
+.chip:hover { border-color: var(--ink); }
+.chip[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: #fff; }
+.chip:focus-visible, .urow:focus-visible, th button:focus-visible, input:focus-visible, select:focus-visible, .exp:focus-visible { outline: 2px solid var(--red); outline-offset: 2px; }
+
+/* unit bars */
+.units { display: flex; flex-direction: column; }
+.ugroup { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .16em; color: var(--ink-4); padding: 14px 0 6px; }
+.uhead, .urow { display: grid; grid-template-columns: minmax(150px, 1.1fr) minmax(120px, 2.4fr) repeat(4, minmax(72px, .55fr)); gap: 12px; align-items: center; }
+.uhead { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .12em; color: var(--ink-4); padding-bottom: 8px; border-bottom: 1px solid var(--line); }
+.uhead span:nth-child(n+3), .urow .c { text-align: right; }
+.urow { padding: 9px 8px; margin: 0 -8px; border-radius: var(--r-md); border: 0; background: none; font: inherit; color: inherit; text-align: left; cursor: pointer; transition: background 160ms var(--ease); }
+.urow:hover { background: var(--subtle); }
+.urow[aria-pressed="true"] { background: var(--yellow-50); }
+.urow .nm { font-weight: 600; min-width: 0; }
+.urow .c { font-variant-numeric: tabular-nums; }
+.urow .c.tot { font-weight: 700; }
+.urow .c.mut { color: var(--ink-3); }
+.bar { display: flex; height: 14px; border-radius: 4px; overflow: hidden; background: var(--subtle); }
+.bar i { display: block; height: 100%; }
+.utotal { border-top: 1.5px solid var(--ink); margin-top: 8px; padding-top: 10px; cursor: default; }
+.utotal:hover { background: none; }
+@media (max-width: 720px) {
+  .uhead { display: none; }
+  .urow { grid-template-columns: 1fr auto; row-gap: 6px; }
+  .urow .bw { grid-column: 1 / -1; order: 3; }
+  .urow .c.own, .urow .c.sh, .urow .c.mut { display: none; }
+}
+
+/* tables */
+.tbox { overflow: auto; border: 1px solid var(--line); border-radius: var(--r-lg); }
+.tbox.tall { max-height: 680px; }
+table { border-collapse: separate; border-spacing: 0; width: 100%; font-size: 13px; }
+th, td { padding: 10px 12px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: middle; white-space: nowrap; }
+th { position: sticky; top: 0; background: var(--card); z-index: 2; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .1em; color: var(--ink-4); }
+th button { font: inherit; color: inherit; text-transform: inherit; letter-spacing: inherit; background: none; border: 0; padding: 0; cursor: pointer; display: inline-flex; gap: 4px; align-items: center; }
+th[aria-sort="ascending"] button::after { content: "↑"; color: var(--ink); }
+th[aria-sort="descending"] button::after { content: "↓"; color: var(--ink); }
+td.r, th.r { text-align: right; }
+td.c, th.c { text-align: center; }
+td.r, td.c { font-variant-numeric: tabular-nums; }
+tbody tr:last-child td { border-bottom: 0; }
+tbody tr:hover td { background: var(--subtle); }
+tbody tr.det:hover td { background: var(--subtle); }
+tfoot td { font-weight: 700; border-top: 1.5px solid var(--ink); border-bottom: 0; position: sticky; bottom: 0; background: var(--card); }
+.who { display: flex; flex-direction: column; gap: 2px; white-space: normal; min-width: 170px; }
+.who b { font-weight: 600; }
+.who span { color: var(--ink-3); font-size: 12px; }
+.badge { display: inline-block; padding: 3px 9px; border-radius: var(--pill); background: var(--subtle); font-size: 11px; font-weight: 600; color: var(--ink-2); white-space: nowrap; }
+.nu { display: inline-grid; place-items: center; min-width: 28px; height: 24px; padding: 0 6px; border-radius: var(--pill); font-weight: 700; font-size: 12px; background: var(--subtle); }
+.nu.hi { background: var(--ink); color: #fff; }
+.split { display: flex; flex-wrap: wrap; gap: 4px; white-space: normal; min-width: 260px; }
+.split span { font-size: 11px; font-weight: 600; padding: 3px 8px; border-radius: var(--pill); background: var(--subtle); white-space: nowrap; }
+.split span.hit { background: var(--yellow-50); box-shadow: inset 0 0 0 1px var(--yellow); }
+td.wr { white-space: normal; min-width: 120px; }
+.ext { color: var(--ink-3); font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .08em; }
+
+/* matrix */
+.mx th.u, .mx td.u { text-align: center; min-width: 64px; padding: 8px 6px; }
+.mx td.u { font-variant-numeric: tabular-nums; font-weight: 600; font-size: 12px; }
+.mx td.u.z { color: var(--line-3); font-weight: 400; }
+.mx th:first-child, .mx td:first-child { position: sticky; left: 0; background: var(--card); z-index: 1; }
+.mx th:first-child { z-index: 3; }
+.mx tbody tr:hover td:first-child { background: var(--subtle); }
+.gstart { border-left: 1px solid var(--line); }
+.mx-tools { display: flex; gap: 12px 20px; flex-wrap: wrap; align-items: center; justify-content: space-between; }
+
+/* bases + departments */
+.mini td { white-space: normal; }
+.mini .desc { color: var(--ink-3); font-size: 12px; display: block; margin-top: 2px; }
+.mini .raw { color: var(--ink-4); font-size: 11px; font-weight: 600; letter-spacing: .04em; display: block; margin-top: 2px; }
+.hbar { height: 8px; border-radius: 4px; background: var(--ink); min-width: 2px; }
+.hcell { width: 28%; min-width: 90px; }
+
+/* register */
+.tools { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+.tools input, .tools select { font: inherit; font-size: 13px; padding: 10px 14px; border-radius: var(--r-md); border: 1.5px solid var(--line-2); background: var(--card); color: var(--ink); min-width: 0; }
+.tools input { flex: 1 1 240px; }
+.tools input:focus, .tools select:focus { border-color: var(--ink); }
+.count { font-size: 12px; color: var(--ink-3); margin-left: auto; }
+.filterpill { display: inline-flex; gap: 8px; align-items: center; padding: 6px 8px 6px 12px; border-radius: var(--pill); background: var(--yellow-50); border: 1px solid var(--yellow); font-size: 12px; font-weight: 600; }
+.filterpill[hidden] { display: none; }
+.filterpill button { font: inherit; border: 0; background: var(--ink); color: #fff; border-radius: var(--pill); width: 20px; height: 20px; line-height: 20px; padding: 0; cursor: pointer; }
+.exp { font: inherit; font-size: 11px; font-weight: 600; color: var(--ink); background: none; border: 1.5px solid var(--line-2); border-radius: var(--pill); padding: 3px 10px; cursor: pointer; margin-top: 4px; align-self: flex-start; }
+.exp:hover { border-color: var(--ink); }
+.exp[aria-expanded="true"] { background: var(--ink); border-color: var(--ink); color: #fff; }
+tr.det > td { background: var(--subtle); white-space: normal; padding: 14px 16px 18px; }
+.calc { display: flex; flex-direction: column; gap: 10px; }
+.calc p { margin: 0; font-size: 12px; color: var(--ink-2); max-width: 90ch; }
+.calc table { background: var(--card); border-radius: var(--r-md); font-size: 12px; }
+.calc th { position: static; background: var(--card); }
+.calc td, .calc th { padding: 7px 10px; }
+.calc tr.pct td { color: var(--ink-3); font-weight: 600; }
+
+.foot { color: var(--ink-3); font-size: 12px; display: flex; flex-direction: column; gap: 4px; padding-top: 8px; border-top: 1px solid var(--line); }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+
+<div class="wrap">
+  <header class="hdr">
+    <img alt="ISD Dubai Sports City" src="data:image/png;base64,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">
+    <div class="hdr-text">
+      <span class="eyebrow">ISD · Finance · Shared salaries</span>
+      <h1>Распределение зарплат по юнитам</h1>
+      <p class="lead" id="lead"></p>
+    </div>
+    <span class="period">Сентябрь 2026 · AED</span>
+  </header>
+
+  <section class="kpis" id="kpis"></section>
+
+  <section class="card" id="method">
+    <div class="card-h"><div>
+      <h2>Как зарплата попадает в P&amp;L юнита</h2>
+      <p class="note">Логика файла Shared Salaries: один ключ на сотрудника, одинаковый для всех его выплат месяца.</p>
+    </div></div>
+    <div class="steps">
+      <div class="step"><span class="k">Ключ сотрудника</span><p>В мастере ключей у каждого сотрудника доли по юнитам, в сумме 100%, основание ключа и руководитель, который его подтверждает.</p></div>
+      <div class="step"><span class="k">Выплаты месяца</span><p>Из payroll за сентябрь берутся все выплаты сотрудника: пакет (оклад, жильё и транспорт по контракту), комиссии, part-time, HRA, персональные тренировки, сверхурочные, транспорт, связь.</p></div>
+      <div class="step"><span class="k">Разнесение</span><p>Каждая выплата делится по ключу: <code>сумма юнита = выплата × доля юнита</code>. Исключение — комиссии: они относятся на юнит, где заработаны.</p></div>
+      <div class="step"><span class="k">Проводка в P&amp;L</span><p>Доли юнитов ISD ложатся на счета Salaries и Salaries Shared (FC, RS, ISD). Доли Kickers, La Famiglia, Caffelini и RMF перевыставляются из ISD и видны в их P&amp;L как Shared Employee Cost – ISD (у RMF — Salaries Shared ISD).</p></div>
+    </div>
+    <div class="example">
+      <h3 id="ex-title"></h3>
+      <div class="tbox"><table id="ex"></table></div>
+    </div>
+  </section>
+
+  <section class="card" id="matrix-card">
+    <div class="card-h">
+      <div>
+        <h2>Ключи общих сотрудников</h2>
+        <p class="note">По умолчанию сначала те, кто делится на большее число юнитов, внутри — по сумме: весь бэк-офис, который работает на все проекты, стоит сверху. Заголовки сортируют, в том числе по департаменту.</p>
+      </div>
+      <div class="chips" role="group" aria-label="Показывать">
+        <button class="chip" id="mx-pct" type="button" aria-pressed="true">Доли, %</button>
+        <button class="chip" id="mx-aed" type="button" aria-pressed="false">Суммы, AED</button>
+      </div>
+    </div>
+    <div class="mx-tools">
+      <div class="chips" id="basis-chips" role="group" aria-label="Основание ключа"></div>
+      <span class="filterpill" id="mx-unitpill" hidden></span>
+    </div>
+    <div class="tbox tall"><table class="mx" id="matrix"></table></div>
+  </section>
+
+  <section class="grid2">
+    <div class="card">
+      <div class="card-h"><div>
+        <h2>Основания ключей</h2>
+        <p class="note">Кто и как задаёт доли, по формулировкам файла. Суммы — все выплаты сотрудников с этим основанием.</p>
+      </div></div>
+      <div class="tbox"><table class="mini" id="bases"></table></div>
+    </div>
+    <div class="card">
+      <div class="card-h"><div>
+        <h2>Затраты по департаментам</h2>
+        <p class="note">Департаменты по файлу. Сначала те, чьи затраты больше всего делятся между юнитами; доля общих — сколько из суммы делится по ключам.</p>
+      </div></div>
+      <div class="tbox"><table class="mini" id="funcs"></table></div>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="card-h"><div>
+      <h2>Состав затрат по юнитам</h2>
+      <p class="note">Пакет — оклад с жилищной и транспортной надбавкой по контракту. Остальные колонки — переменные выплаты сентября и ретейнер Adhoc.</p>
+    </div></div>
+    <div class="tbox"><table id="comps"></table></div>
+  </section>
+
+  <section class="card" id="register-card">
+    <div class="card-h"><div>
+      <h2>Реестр</h2>
+      <p class="note">Все сотрудники сентября и ретейнер Adhoc. По умолчанию — по числу юнитов, затем по сумме; заголовки сортируют. «Расчёт» показывает разнесение каждой выплаты по ключу.</p>
+    </div></div>
+    <div class="tools">
+      <input id="q" type="search" placeholder="Поиск по имени, роли, руководителю" aria-label="Поиск">
+      <select id="f-unit" aria-label="Юнит"></select>
+      <select id="f-func" aria-label="Департамент"></select>
+      <span class="count" id="count"></span>
+    </div>
+    <div class="tbox tall"><table id="reg"></table></div>
+  </section>
+
+  <footer class="foot">
+    <span>Источники: Shared Salaries.xlsx — лист «Sep 2026» (выплаты и разнесение) и «Emp Master Allocation as per %» (ключи, основания, руководители); Adhoc — Legal Fee Distribution FMO Sep 2026.</span>
+    <span id="recon"></span>
+  </footer>
+</div>
+
+<script type="application/json" id="data">[{"id":"HR10309","n":"Aaron Lopez Canadas","r":"Real Madrid Coach","f":"coach","b":"workflow","s":"Simon James Mcguinness","p":"Shared","qb":"RMF Sports Academy LLC","t":9500,"a":{"rmf":9500},"c":{"salary":{"rmf":9500}},"m":{"rmf":1},"d":"Sport"},{"id":"HR10342","n":"Abbas Ali","r":"Accountant","f":"back","b":"aleksei","s":"Mansoor Khan","p":"Racket Sports","qb":"Salaries Shared RS","t":6000,"a":{"padel":5100,"tt":900},"c":{"salary":{"padel":5100,"tt":900}},"m":{"padel":0.85,"tt":0.15},"d":"Accounts & Finance"},{"id":"HR10156","n":"Abdul Rehman Said Rasool Khan","r":"Real Madrid Coach","f":"coach","b":"unit","s":"Simon James Mcguinness","p":"Real Madrid","qb":"Salaries","t":8000,"a":{"rm":8000},"c":{"salary":{"rm":8000}},"m":{"rm":1},"d":"Sport"},{"id":"HR10457","n":"Afa Awadh Nasib Obaid Alrashdi","r":"Marketing Specialist","f":"mkt","b":"workflow","s":"Anjali Mohan","p":"ISD","qb":"Salaries Shared ISD","t":6000,"a":{"rm":2100,"pitch":2100,"padel":1620,"tt":180},"c":{"salary":{"rm":2100,"pitch":2100,"padel":1620,"tt":180}},"m":{"rm":0.35,"pitch":0.35,"padel":0.27,"tt":0.03},"d":"Marketing & IT"},{"id":"HR10338","n":"Ahmad Alaaeldin Mohamed Morad","r":"Real Madrid Coach","f":"coach","b":"unit","s":"Simon James Mcguinness","p":"Real Madrid","qb":"Salaries","t":7500,"a":{"rm":7500},"c":{"salary":{"rm":7500}},"m":{"rm":1},"d":"Sport"},{"id":"PR513","n":"Ahmed Saad","r":"Real Madrid Coach - Part Time Deira","f":"coach","b":"unit","s":"","p":"Real Madrid","qb":"Real Madrid Part Timers","t":1500,"a":{"rm":1500},"c":{"parttime":{"rm":1500}},"m":{"rm":1},"d":"Sport"},{"id":"PR521","n":"Ahmed Salaeh","r":"Real Madrid Coach - Part Time","f":"coach","b":"unit","s":"","p":"Real Madrid","qb":"Real Madrid Part Timers","t":6000,"a":{"rm":6000},"c":{"parttime":{"rm":6000}},"m":{"rm":1},"d":"Sport"},{"id":"HR10337","n":"Akemini Claudius Kingsley","r":"Real Madrid Coach","f":"coach","b":"unit","s":"Simon James Mcguinness","p":"Real Madrid","qb":"Salaries","t":9600,"a":{"rm":9600},"c":{"salary":{"rm":7500},"pt":{"rm":2100}},"m":{"rm":1},"d":"Sport"},{"id":"HR10172","n":"Aleksei Sukhov","r":"Head of Finance","f":"mgmt","b":"workflow","s":"Daniels Petrovs","p":"Shared","qb":"Salaries Shared","t":35000,"a":{"rm":3500,"pitch":5250,"padel":15750,"tt":1750,"kickers":3500,"lf":3500,"rmf":1750},"c":{"salary":{"rm":2500,"pitch":3750,"padel":11250,"tt":1250,"kickers":2500,"lf":2500,"rmf":1250},"hra":{"rm":1000,"pitch":1500,"padel":4500,"tt":500,"kickers":1000,"lf":1000,"rmf":500}},"m":{"rm":0.1,"pitch":0.15,"padel":0.45,"tt":0.05,"kickers":0.1,"lf":0.1,"rmf":0.05},"d":"Accounts & Finance"},{"id":"HR10194","n":"Alexey Liventsov","r":"Table Tennis Coach","f":"coach","b":"unit","s":"Aleksei Sukhov","p":"Table Tennis","qb":"Salaries","t":41130.67,"a":{"tt":41130.67},"c":{"salary":{"tt":15000},"commission":{"tt":23630.67},"transport":{"tt":2500}},"m":{"tt":1},"d":"Sport"},{"id":"HR10259","n":"Ali Irtaza Ghulam Mustafa","r":"Driver","f":"ops","b":"workflow","s":"Anjali Mohan","p":"ISD","qb":"Salaries Shared","t":4500,"a":{"rm":630.0,"pitch":585,"padel":450,"tt":90,"kickers":1395,"lf":1035,"rmf":225,"caff":90},"c":{"salary":{"rm":630.0,"pitch":585,"padel":450,"tt":90,"kickers":1395,"lf":1035,"rmf":225,"caff":90}},"m":{"rm":0.14,"pitch":0.13,"padel":0.1,"tt":0.02,"kickers":0.31,"lf":0.23,"rmf":0.05,"caff":0.02},"d":"Transportation"},{"id":"HR10159","n":"Ali Mohammed Akbar Ali","r":"Front desk Executive","f":"front","b":"workflow","s":"Simon James Mcguinness","p":"Football","qb":"Salaries Shared FC","t":5000,"a":{"pitch":5000},"c":{"salary":{"pitch":5000}},"m":{"pitch":1},"d":"Customer Care"},{"id":"HR10436","n":"Alvic Maglangit","r":"Cleaner/ Service Staff","f":"clean","b":"cleaning","s":"Meraly Navarra Zaspa","p":"Racket Sports","qb":"Salaries Shared RS","t":2844,"a":{"rm":511.92,"pitch":483.48,"padel":426.6,"ufc":1422},"c":{"salary":{"rm":486,"pitch":459.0,"padel":405,"ufc":1350},"ot":{"rm":25.92,"pitch":24.48,"padel":21.6,"ufc":72}},"m":{"rm":0.18,"pitch":0.17,"padel":0.15,"ufc":0.5},"d":"Cleaner / Service Staff"},{"id":"HR10496","n":"Amani Faheim Mohamed Khalfan Alblooshi","r":"Admin Officer","f":"back","b":"workflow","s":"","p":"ISD","qb":"Salaries Shared","t":6000,"a":{"rm":3000,"pitch":3000},"c":{"salary":{"rm":3000,"pitch":3000}},"m":{"rm":0.5,"pitch":0.5},"d":"HR, Admin"},{"id":"HR10254","n":"Ameirah Khameis Khameis Barman Alzahmi","r":"Customer Care Executive","f":"front","b":"workflow","s":"Anjali Mohan","p":"ISD","qb":"Salaries Shared ISD","t":6000,"a":{"rm":2100,"pitch":2100,"padel":1620,"tt":180},"c":{"salary":{"rm":2100,"pitch":2100,"padel":1620,"tt":180}},"m":{"rm":0.35,"pitch":0.35,"padel":0.27,"tt":0.03},"d":"Customer Care"},{"id":"PR525","n":"Amier","r":"Table Tennis Part timer","f":"coach","b":"unit","s":"","p":"Table Tennis","qb":"Table Tennis Part Timers","t":414,"a":{"tt":414},"c":{"parttime":{"tt":414}},"m":{"tt":1},"d":"Sport"},{"id":"PR505","n":"Andrea","r":"Real Madrid Coach - Part Time","f":"coach","b":"unit","s":"","p":"Real Madrid","qb":"Real Madrid Part Timers","t":1200,"a":{"rm":1200},"c":{"parttime":{"rm":1200}},"m":{"rm":1},"d":"Sport"},{"id":"HR10423","n":"Androw Emil Fayes Ayad Ibrahim","r":"Graphic Designer","f":"mkt","b":"simon","s":"Simon James Mcguinness","p":"Shared","qb":"Salaries Shared","t":9000,"a":{"rm":3060,"pitch":2970,"rmf":2970},"c":{"salary":{"rm":3060,"pitch":2970,"rmf":2970}},"m":{"rm":0.34,"pitch":0.33,"rmf":0.33},"d":"Real Madrid"},{"id":"HR10010","n":"Anjali Mohan","r":"HR Manager","f":"back","b":"headcount","s":"Daniels Petrovs","p":"Shared","qb":"Salaries Shared","t":16210,"a":{"rm":3242,"pitch":1621,"padel":2917.8,"kickers":4538.8,"lf":3242,"rmf":648.4},"c":{"salary":{"rm":3200,"pitch":1600,"padel":2880,"kickers":4480,"lf":3200,"rmf":640},"mobile":{"rm":42,"pitch":21,"padel":37.8,"kickers":58.8,"lf":42,"rmf":8.4}},"m":{"rm":0.2,"pitch":0.1,"padel":0.18,"kickers":0.28,"lf":0.2,"rmf":0.04},"d":"HR, Admin"},{"id":"HR10180","n":"Anna Coll Catalan","r":"Real Madrid Operations Manager","f":"mgmt","b":"simon","s":"Simon James Mcguinness","p":"Shared","qb":"Salaries Shared","t":22000,"a":{"rm":11000,"rmf":11000},"c":{"salary":{"rm":11000,"rmf":11000}},"m":{"rm":0.5,"rmf":0.5},"d":"Sport"},{"id":"HR10037","n":"Anne Kalekye Maingi","r":"Receptionist","f":"front","b":"workflow","s":"Simon James Mcguinness","p":"Football","qb":"Salaries Shared FC","t":5500,"a":{"pitch":5500},"c":{"salary":{"pitch":5500}},"m":{"pitch":1},"d":"Customer Care"},{"id":"HR10119","n":"Arslan Rehmat","r":"Operations","f":"ops","b":"workflow","s":"Simon James Mcguinness","p":"Football","qb":"Salaries Shared FC","t":3700,"a":{"pitch":3700},"c":{"salary":{"pitch":3700}},"m":{"pitch":1},"d":"Sport Helper"},{"id":"HR10253","n":"Atif Bashir","r":"Chief Accountant","f":"back","b":"workflow","s":"Aleksei Sukhov","p":"Shared","qb":"Salaries Shared","t":26500,"a":{"rm":5300,"pitch":5300,"padel":3180,"tt":795,"kickers":5300,"lf":5300,"rmf":1325},"c":{"salary":{"rm":5300,"pitch":5300,"padel":3180,"tt":795,"kickers":5300,"lf":5300,"rmf":1325}},"m":{"rm":0.2,"pitch":0.2,"padel":0.12,"tt":0.03,"kickers":0.2,"lf":0.2,"rmf":0.05},"d":"Accounts & Finance"},{"id":"PR501","n":"Ayham","r":"Real Madrid Coach - Part Time","f":"coach","b":"unit","s":"","p":"Real Madrid","qb":"Real Madrid Part Timers","t":2850,"a":{"rm":2850},"c":{"parttime":{"rm":2850}},"m":{"rm":1},"d":"Sport"},{"id":"HR10368","n":"Beatrice Nartekie Osei","r":"Cleaner/ Service Staff","f":"clean","b":"cleaning","s":"Meraly Navarra Zaspa","p":"Shared","qb":"Salaries Shared","t":2500,"a":{"padel":2125,"tt":375},"c":{"salary":{"padel":2125,"tt":375}},"m":{"padel":0.85,"tt":0.15},"d":"Cleaner / Service Staff"},{"id":"PR516","n":"Bebo","r":"Real Madrid Coach - Part Time Deira","f":"coach","b":"unit","s":"","p":"Real Madrid","qb":"Real Madrid Part Timers","t":5250,"a":{"rm":5250},"c":{"parttime":{"rm":5250}},"m":{"rm":1},"d":"Sport"},{"id":"HR10304","n":"Binmi Yoshitha Ratnayake","r":"Graphic Designer","f":"mkt","b":"aleksei","s":"Aleksei Sukhov","p":"Shared","qb":"Salaries Shared","t":9000,"a":{"padel":5760,"tt":1440,"caff":1800},"c":{"salary":{"padel":5760,"tt":1440,"caff":1800}},"m":{"padel":0.64,"tt":0.16,"caff":0.2},"d":"Marketing & IT"},{"id":"HR10380","n":"Carra Francell Dagandara","r":"Customer Relations Executive","f":"front","b":"unit","s":"Simon James Mcguinness","p":"Real Madrid","qb":"Salaries","t":5000,"a":{"rm":5000},"c":{"salary":{"rm":5000}},"m":{"rm":1},"d":"Customer Care"},{"id":"PR517","n":"Chak","r":"Real Madrid Coach - Part Time Deira","f":"coach","b":"unit","s":"","p":"Real Madrid","qb":"Real Madrid Part Timers","t":300,"a":{"rm":300},"c":{"parttime":{"rm":300}},"m":{"rm":1},"d":"Sport"},{"id":"HR10057","n":"Cornelius Nsanyui Tih","r":"Service Staff","f":"clean","b":"cleaning","s":"Meraly Navarra Zaspa","p":"Racket Sports","qb":"Salaries Shared RS","t":4000,"a":{"padel":3400,"tt":600},"c":{"salary":{"padel":3400,"tt":600}},"m":{"padel":0.85,"tt":0.15},"d":"Service Staff"},{"id":"HR10196","n":"Daniel Casanova Bataller","r":"Padel Coach","f":"coach","b":"unit","s":"Aleksei Sukhov","p":"Padel","qb":"Salaries","t":24760,"a":{"padel":24760},"c":{"salary":{"padel":8000},"commission":{"padel":16760}},"m":{"padel":1},"d":"Sport"},{"id":"HR10195","n":"Daniel Moreno Hernandez","r":"Padel Coach","f":"coach","b":"unit","s":"Aleksei Sukhov","p":"Padel","qb":"Salaries","t":19181,"a":{"padel":19181},"c":{"salary":{"padel":6000},"commission":{"padel":13181}},"m":{"padel":1},"d":"Sport"},{"id":"HR10494","n":"Daria Sopkina","r":"Sales Executive","f":"mkt","b":"unit","s":"","p":"Real Madrid","qb":"Salaries Shared FC","t":750,"a":{"rm":750},"c":{"salary":{"rm":750}},"m":{"rm":1},"d":"Sales & Development"},{"id":"HR10300","n":"Derick Hilaire Nkolo","r":"Service Staff","f":"clean","b":"workflow","s":"Roman","p":"Pitch Maintenance","qb":"Salaries Shared FC","t":3000,"a":{"rm":2400,"pitch":600},"c":{"salary":{"rm":2400,"pitch":600}},"m":{"rm":0.8,"pitch":0.2},"d":"Service Staff"},{"id":"HR10142","n":"Dipendra Shah","r":"Service Staff","f":"clean","b":"workflow","s":"Simon James Mcguinness","p":"Football","qb":"Salaries Shared FC","t":3000,"a":{"pitch":3000},"c":{"salary":{"pitch":3000}},"m":{"pitch":1},"d":"Service Staff"},{"id":"HR10169","n":"Emmanuel Funue","r":"Service Staff","f":"clean","b":"cleaning","s":"Meraly Navarra Zaspa","p":"Racket Sports","qb":"Salaries Shared RS","t":3758,"a":{"padel":3194.3,"tt":563.7},"c":{"salary":{"padel":2975,"tt":525},"ot":{"padel":219.3,"tt":38.7}},"m":{"padel":0.85,"tt":0.15},"d":"Service Staff"},{"id":"HR10046","n":"Evangeline Rose Lily Atherton","r":"Sales & Retention Manager","f":"mkt","b":"simon","s":"Simon James Mcguinness","p":"Shared","qb":"Salaries Shared","t":15000,"a":{"rm":7500,"rmf":7500},"c":{"salary":{"rm":7500,"rmf":7500}},"m":{"rm":0.5,"rmf":0.5},"d":"Marketing & Business Development"},{"id":"HR212","n":"Faridatou Essoazina","r":"Cleaner/ Service Staff","f":"clean","b":"cleaning","s":"Meraly Navarra Zaspa","p":"Shared","qb":"Salaries Shared","t":3500,"a":{"rm":875,"pitch":875,"kickers":875,"lf":875},"c":{"salary":{"rm":625,"pitch":625,"kickers":625,"lf":625},"parttime":{"rm":250,"pitch":250,"kickers":250,"lf":250}},"m":{"rm":0.25,"pitch":0.25,"kickers":0.25,"lf":0.25},"d":"Cleaner / Service Staff"},{"id":"HR10487","n":"Faris Javier Rocha Saavedra","r":"Marketing & Partnerships Manager","f":"mkt","b":"aleksei","s":"Aleksei Sukhov","p":"Shared","qb":"Salaries Shared","t":7970,"a":{"padel":6770,"tt":950,"caff":250},"c":{"salary":{"padel":3800,"tt":950,"caff":250},"commission":{"padel":2970}},"m":{"padel":0.76,"tt":0.19,"caff":0.05},"d":"Marketing & Business Development"},{"id":"PR506","n":"Gaby","r":"Real Madrid Coach - Part Time","f":"coach","b":"unit","s":"","p":"Real Madrid","qb":"Real Madrid Part Timers","t":3150,"a":{"rm":3150},"c":{"parttime":{"rm":3150}},"m":{"rm":1},"d":"Sport"},{"id":"HR10467","n":"Geofrey Indusa Kisanji","r":"Security Manager","f":"ops","b":"simon","s":"Simon James Mcguinness","p":"Shared","qb":"Salaries Shared","t":12500,"a":{"rm":625,"pitch":1250,"padel":250,"ufc":10000,"kickers":375},"c":{"salary":{"rm":625,"pitch":1250,"padel":250,"ufc":10000,"kickers":375}},"m":{"rm":0.05,"pitch":0.1,"padel":0.02,"ufc":0.8,"kickers":0.03},"d":"Security"},{"id":"HR10396","n":"George William Mayanj","r":"Cleaner/ Service Staff","f":"clean","b":"cleaning","s":"Meraly Navarra Zaspa","p":"Shared","qb":"Salaries Shared","t":2747,"a":{"rm":549.4,"pitch":412.05,"ufc":1785.55},"c":{"salary":{"rm":500,"pitch":375,"ufc":1625},"ot":{"rm":49.4,"pitch":37.05,"ufc":160.55}},"m":{"rm":0.2,"pitch":0.15,"ufc":0.65},"d":"Cleaner / Service Staff"},{"id":"PR504","n":"GianMarco","r":"Real Madrid Coach - Part Time","f":"coach","b":"unit","s":"","p":"Real Madrid","qb":"Real Madrid Part Timers","t":1500,"a":{"rm":1500},"c":{"parttime":{"rm":1500}},"m":{"rm":1},"d":"Sport"},{"id":"HR10441","n":"Gladys Agbalega","r":"Cleaner/ Service Staff","f":"clean","b":"cleaning","s":"Meraly Navarra Zaspa","p":"ISD","qb":"Salaries Shared ISD","t":2738,"a":{"rm":1013.06,"pitch":1040.44,"padel":684.5},"c":{"salary":{"rm":999,"pitch":1026,"padel":675},"ot":{"rm":14.06,"pitch":14.44,"padel":9.5}},"m":{"rm":0.37,"pitch":0.38,"padel":0.25},"d":"Cleaner / Service Staff"},{"id":"HR10409","n":"Godfred Teye","r":"Cleaner/ Service Staff","f":"clean","b":"cleaning","s":"Meraly Navarra Zaspa","p":"ISD","qb":"Salaries Shared ISD","t":2594,"a":{"rm":518.8,"pitch":389.1,"ufc":1686.1},"c":{"salary":{"rm":500,"pitch":375,"ufc":1625},"ot":{"rm":18.8,"pitch":14.1,"ufc":61.1}},"m":{"rm":0.2,"pitch":0.15,"ufc":0.65},"d":"Cleaner / Service Staff"},{"id":"HR10157","n":"Gurwinder Singh Paramjit Singh","r":"Venue & Events Operations Manager","f":"mgmt","b":"workflow","s":"Simon James Mcguinness","p":"Pitch Rental & Events","qb":"Salaries","t":13500,"a":{"pitch":13500},"c":{"salary":{"pitch":13500}},"m":{"pitch":1},"d":"Events"},{"id":"HR10320","n":"Hector Martinez Fron","r":"Real Madrid Coach","f":"coach","b":"unit","s":"Simon James Mcguinness","p":"Real Madrid","qb":"Salaries","t":9800,"a":{"rm":9800},"c":{"salary":{"rm":9500},"pt":{"rm":300}},"m":{"rm":1},"d":"Sport"},{"id":"HR10329","n":"Imee Rolaine Dolar Seprado","r":"Videographer","f":"mkt","b":"aleksei","s":"Aleksei Sukhov","p":"Padel","qb":"Salaries Shared","t":4300,"a":{"padel":1720,"tt":430,"caff":2150},"c":{"salary":{"padel":1720,"tt":430,"caff":2150}},"m":{"padel":0.4,"tt":0.1,"caff":0.5},"d":"Marketing & IT"},{"id":"HR10434","n":"Imran Raheem","r":"Cleaner/ Service Staff","f":"clean","b":"cleanshare","s":"Meraly Navarra Zaspa","p":"Shared","qb":"Salaries Shared","t":7000,"a":{"rm":1178.33,"pitch":1116.11,"padel":1905.56,"tt":291.67,"ufc":952.78,"kickers":1458.33,"lf":97.22},"c":{"salary":{"rm":1178.33,"pitch":1116.11,"padel":1905.56,"tt":291.67,"ufc":952.78,"kickers":1458.33,"lf":97.22}},"m":{"rm":0.168333,"pitch":0.159444,"padel":0.272222,"tt":0.041667,"ufc":0.136111,"kickers":0.208333,"lf":0.013889},"d":"Cleaner / Service Staff"},{"id":"HR10305","n":"Irfan Manzoor","r":"Service Staff","f":"clean","b":"workflow","s":"Simon James Mcguinness","p":"Football","qb":"Salaries Shared FC","t":3500,"a":{"pitch":3500},"c":{"salary":{"pitch":3500}},"m":{"pitch":1},"d":"Service Staff"},{"id":"HR10463","n":"Jagdish Surajbali Yadav","r":"Asst. Technical Director","f":"mgmt","b":"workflow","s":"Roman","p":"Pitch Maintenance","qb":"Salaries","t":9500,"a":{"pitch":4750,"ufc":4750},"c":{"salary":{"pitch":4000,"ufc":4000},"hra":{"pitch":750,"ufc":750}},"m":{"pitch":0.5,"ufc":0.5},"d":"Repair & Maintenance"},{"id":"HR10143","n":"Jamaludin Sailuddin","r":"Footlab Monitor","f":"coach","b":"unit","s":"Simon James Mcguinness","p":"Real Madrid","qb":"Salaries","t":7500,"a":{"rm":7500},"c":{"salary":{"rm":7500}},"m":{"rm":1},"d":"Sport"},{"id":"HR10145","n":"Janeffer Mariana De Oliva Vichiato","r":"Customer Relations Executive","f":"front","b":"unit","s":"Simon James Mcguinness","p":"Real Madrid","qb":"Salaries","t":6000,"a":{"rm":6000},"c":{"salary":{"rm":6000}},"m":{"rm":1},"d":"Customer Care"},{"id":"HR10306","n":"Janela Jhamel Lagunzad Sarmiento","r":"Receptionist","f":"front","b":"workflow","s":"Simon James Mcguinness","p":"Football","qb":"Salaries Shared FC","t":3500,"a":{"pitch":3500},"c":{"salary":{"pitch":3500}},"m":{"pitch":1},"d":"Customer Care"},{"id":"HR10101","n":"Jawaruddin","r":"Real Madrid Coach","f":"coach","b":"unit","s":"Simon James Mcguinness","p":"Real Madrid","qb":"Salaries","t":9550,"a":{"rm":9550},"c":{"salary":{"rm":8500},"pt":{"rm":1050}},"m":{"rm":1},"d":"Sport"},{"id":"HR10319","n":"Jeremias Gabriel Alves De Lima","r":"Padel Coach","f":"coach","b":"unit","s":"Aleksei Sukhov","p":"Padel","qb":"Salaries","t":19733,"a":{"padel":19733},"c":{"salary":{"padel":6000},"commission":{"padel":13733}},"m":{"padel":1},"d":"Sport"},{"id":"HR10430","n":"Jerine Ygana Mallari","r":"Cleaner/ Service Staff","f":"clean","b":"cleaning","s":"Meraly Navarra Zaspa","p":"Racket Sports","qb":"Salaries Shared RS","t":2700,"a":{"padel":2295,"tt":405},"c":{"salary":{"padel":2295,"tt":405}},"m":{"padel":0.85,"tt":0.15},"d":"Cleaner / Service Staff"},{"id":"HR10410","n":"Jocelyn De Vera Rosales","r":"Cleaner/ Service Staff","f":"clean","b":"cleaning","s":"Meraly Navarra Zaspa","p":"ISD","qb":"Salaries Shared ISD","t":2600,"a":{"rm":650,"pitch":650,"kickers":1300},"c":{"salary":{"rm":625,"pitch":625,"kickers":1250},"ot":{"rm":25,"pitch":25,"kickers":50}},"m":{"rm":0.25,"pitch":0.25,"kickers":0.5},"d":"Cleaner / Service Staff"},{"id":"HR10004","n":"Jocelyn Sanchez Alisdan","r":"Admin Officer","f":"back","b":"workflow","s":"Anjali Mohan","p":"Shared","qb":"Salaries Shared","t":9000,"a":{"rm":4500,"pitch":630.0,"padel":900,"kickers":1620,"lf":450,"rmf":900},"c":{"salary":{"rm":4500,"pitch":630.0,"padel":900,"kickers":1620,"lf":450,"rmf":900}},"m":{"rm":0.5,"pitch":0.07,"padel":0.1,"kickers":0.18,"lf":0.05,"rmf":0.1},"d":"HR, Admin"},{"id":"HR10161","n":"John Ralph Henry Gabrino Remulla","r":"Customer care Executive","f":"front","b":"unit","s":"Simon James Mcguinness","p":"Real Madrid","qb":"Salaries","t":5000,"a":{"rm":5000},"c":{"salary":{"rm":5000}},"m":{"rm":1},"d":"Customer Care"},{"id":"HR10378","n":"John Rey Barlas Suriaga","r":"Cleaner/ Service Staff","f":"clean","b":"cleaning","s":"Meraly Navarra Zaspa","p":"Shared","qb":"Salaries Shared","t":4689,"a":{"rm":2344.5,"pitch":2344.5},"c":{"salary":{"rm":1750,"pitch":1750},"ot":{"rm":594.5,"pitch":594.5}},"m":{"rm":0.5,"pitch":0.5},"d":"Cleaner / Service Staff"},{"id":"HR10408","n":"Johnson Duah Agyemang","r":"Cleaner/ Service Staff","f":"clean","b":"cleaning","s":"Meraly Navarra Zaspa","p":"ISD","qb":"Salaries Shared ISD","t":2642,"a":{"rm":528.4,"pitch":396.3,"ufc":1717.3},"c":{"salary":{"rm":500,"pitch":375,"ufc":1625},"ot":{"rm":28.4,"pitch":21.3,"ufc":92.3}},"m":{"rm":0.2,"pitch":0.15,"ufc":0.65},"d":"Cleaner / Service Staff"},{"id":"HR10055","n":"Jordi Casanova Bataller","r":"Padel Coach","f":"coach","b":"unit","s":"Aleksei Sukhov","p":"Padel","qb":"Salaries","t":23183,"a":{"padel":23183},"c":{"salary":{"padel":15000},"commission":{"padel":8183}},"m":{"padel":1},"d":"Sport"},{"id":"HR10370","n":"Jorge Cegonino Giral","r":"Real Madrid Coach","f":"coach","b":"unit","s":"Simon James Mcguinness","p":"Real Madrid","qb":"Salaries","t":9500,"a":{"rm":9500},"c":{"salary":{"rm":9000},"pt":{"rm":500}},"m":{"rm":1},"d":"Sport"},{"id":"PR511","n":"Jwan","r":"Real Madrid Coach - Part Time Deira","f":"coach","b":"unit","s":"","p":"Real Madrid","qb":"Real Madrid Part Timers","t":2850,"a":{"rm":2850},"c":{"parttime":{"rm":2850}},"m":{"rm":1},"d":"Sport"},{"id":"PR507","n":"Keish","r":"Real Madrid Coach - Part Time","f":"coach","b":"unit","s":"","p":"Real Madrid","qb":"Real Madrid Part Timers","t":2100,"a":{"rm":2100},"c":{"parttime":{"rm":2100}},"m":{"rm":1},"d":"Sport"},{"id":"HR10277","n":"Ketul Kantilal Parmar","r":"Physiotherapist","f":"coach","b":"unit","s":"Simon James Mcguinness","p":"Real Madrid","qb":"Salaries","t":7000,"a":{"rm":7000},"c":{"salary":{"rm":7000}},"m":{"rm":1},"d":"Health & Care"},{"id":"HR10245","n":"Lamindu Hashira Maldeniya","r":"Content Creator","f":"mkt","b":"simon","s":"Simon James Mcguinness","p":"Football","qb":"Salaries Shared","t":11000,"a":{"rm":3740.0,"pitch":3630,"rmf":3630},"c":{"salary":{"rm":3740.0,"pitch":3630,"rmf":3630}},"m":{"rm":0.34,"pitch":0.33,"rmf":0.33},"d":"Marketing & IT"},{"id":"PR518","n":"Leandro","r":"Real Madrid Coach - Part Time Deira","f":"coach","b":"unit","s":"","p":"Real Madrid","qb":"Real Madrid Part Timers","t":7500,"a":{"rm":7500},"c":{"parttime":{"rm":7500}},"m":{"rm":1},"d":"Sport"},{"id":"PR622","n":"Leila (Trial Based)","r":"","f":"other","b":"workflow","s":"","p":"Racket Sports","qb":"Salaries","t":2000,"a":{"padel":2000},"c":{"salary":{"padel":2000}},"m":{"padel":1},"d":"Не указан в файле"},{"id":"HR10221","n":"Limsa Salim Sabeena Shahul Hameed Salim","r":"Jr. Accountant","f":"back","b":"workflow","s":"Mansoor Khan","p":"Real Madrid","qb":"Salaries Shared FC","t":5500,"a":{"rm":2750,"pitch":2750},"c":{"salary":{"rm":2750,"pitch":2750}},"m":{"rm":0.5,"pitch":0.5},"d":"Accounts & Finance"},{"id":"HR10379","n":"Lucy Moyo Darrall","r":"Business Development Manager","f":"mkt","b":"simon","s":"Simon James Mcguinness","p":"ISD","qb":"Salaries Shared","t":17500,"a":{"rm":5775,"pitch":5775,"rmf":5950},"c":{"salary":{"rm":5775,"pitch":5775,"rmf":5950}},"m":{"rm":0.33,"pitch":0.33,"rmf":0.34},"d":"BDM"},{"id":"PR515","n":"Mahmoud","r":"Real Madrid Coach - Part Time Deira","f":"coach","b":"unit","s":"","p":"Real Madrid","qb":"Real Madrid Part Timers","t":2100,"a":{"rm":2100},"c":{"parttime":{"rm":2100}},"m":{"rm":1},"d":"Sport"},{"id":"HR10314","n":"Mansoor Khan","r":"Senior Accountant","f":"back","b":"workflow","s":"Atif Bashir","p":"ISD","qb":"Salaries Shared ISD","t":11500,"a":{"rm":4600,"pitch":3450,"padel":2875,"tt":575},"c":{"salary":{"rm":4600,"pitch":3450,"padel":2875,"tt":575}},"m":{"rm":0.4,"pitch":0.3,"padel":0.25,"tt":0.05},"d":"Accounts & Finance"},{"id":"HR10276","n":"Manuel Lopez Perez","r":"Real Madrid Coach","f":"coach","b":"unit","s":"Simon James Mcguinness","p":"Real Madrid","qb":"Salaries","t":13000,"a":{"rm":13000},"c":{"salary":{"rm":13000}},"m":{"rm":1},"d":"Sport"},{"id":"HR10248","n":"Marc Avila I Rodriguez","r":"Real Madrid Coach","f":"coach","b":"unit","s":"Simon James Mcguinness","p":"Real Madrid","qb":"Salaries","t":13666,"a":{"rm":13666},"c":{"salary":{"rm":11000},"hra":{"rm":2666}},"m":{"rm":1},"d":"Sport"},{"id":"HR10477","n":"Mard Prizarmii Moje De Castro","r":"Front Desk Executive","f":"front","b":"workflow","s":"Aleksei Sukhov","p":"Racket Sports","qb":"Salaries Shared RS","t":5000,"a":{"padel":4000,"tt":1000},"c":{"salary":{"padel":4000,"tt":1000}},"m":{"padel":0.8,"tt":0.2},"d":"Customer Care"},{"id":"HR10330","n":"Margarita Skulskaya","r":"Service Staff","f":"ubo","b":"unit","s":"UBO","p":"UBO","qb":"Salaries","t":9667,"a":{"ubo":9667},"c":{"salary":{"ubo":9667}},"m":{"ubo":1},"d":"UBO"},{"id":"HR10471","n":"Maria Aurora Perez Espiritu","r":"Real Madrid Coach","f":"coach","b":"unit","s":"Simon James Mcguinness","p":"Real Madrid","qb":"Salaries","t":8500,"a":{"rm":8500},"c":{"salary":{"rm":8500}},"m":{"rm":1},"d":"Sport"},{"id":"HR10166","n":"Marilyn Kie Lingad","r":"Customer care Executive","f":"front","b":"unit","s":"Simon James Mcguinness","p":"Real Madrid","qb":"Salaries","t":8000,"a":{"rm":8000},"c":{"salary":{"rm":8000}},"m":{"rm":1},"d":"Customer Care"},{"id":"HR10495","n":"Marina Gorbatiuk","r":"Marketing and Communication Manager","f":"mkt","b":"aleksei","s":"","p":"Shared","qb":"Salaries Shared","t":8533.33,"a":{"padel":682.67,"tt":170.67,"caff":7680.0},"c":{"salary":{"padel":682.67,"tt":170.67,"caff":7680.0}},"m":{"padel":0.08,"tt":0.02,"caff":0.9},"d":"Marketing & IT"},{"id":"HR10327","n":"Mariya Viktorovna Porokh","r":"Service Staff","f":"ubo","b":"unit","s":"UBO","p":"UBO","qb":"Salaries","t":7000,"a":{"ubo":7000},"c":{"salary":{"ubo":7000}},"m":{"ubo":1},"d":"UBO"},{"id":"HR10090","n":"Marshian Santhosh","r":"Full Stack Developer","f":"back","b":"workflow","s":"Daniels Petrovs","p":"ISDBE","qb":"Salaries Shared","t":15500,"a":{"rm":4805,"pitch":1550,"padel":1860,"tt":310,"kickers":3100,"lf":1550,"rmf":2325},"c":{"salary":{"rm":4805,"pitch":1550,"padel":1860,"tt":310,"kickers":3100,"lf":1550,"rmf":2325}},"m":{"rm":0.31,"pitch":0.1,"padel":0.12,"tt":0.02,"kickers":0.2,"lf":0.1,"rmf":0.15},"d":"Marketing & IT"},{"id":"HR10405","n":"Matias Ignacio Farias","r":"Real Madrid Coach","f":"coach","b":"unit","s":"Simon James Mcguinness","p":"Real Madrid","qb":"Salaries","t":10250,"a":{"rm":10250},"c":{"salary":{"rm":9500},"pt":{"rm":750}},"m":{"rm":1},"d":"Sport"},{"id":"HR10158","n":"Mehboob Sultan","r":"Operations","f":"ops","b":"workflow","s":"Simon James Mcguinness","p":"Football","qb":"Salaries Shared FC","t":4000,"a":{"pitch":4000},"c":{"salary":{"pitch":4000}},"m":{"pitch":1},"d":"Sport Helper"},{"id":"HR10428","n":"Meraly Navarra Zaspa","r":"Cleaner/ Service Staff","f":"clean","b":"cleanshare","s":"Meraly Navarra Zaspa","p":"Shared","qb":"Salaries Shared","t":18000,"a":{"rm":3030.0,"pitch":2870.0,"padel":4900.0,"tt":750,"ufc":2450,"kickers":3750,"lf":250},"c":{"salary":{"rm":3030.0,"pitch":2870.0,"padel":4900.0,"tt":750,"ufc":2450,"kickers":3750,"lf":250}},"m":{"rm":0.168333,"pitch":0.159444,"padel":0.272222,"tt":0.041667,"ufc":0.136111,"kickers":0.208333,"lf":0.013889},"d":"Cleaner / Service Staff"},{"id":"HR10080","n":"Merie Joy Iponla Vergara","r":"Front Desk Executive","f":"front","b":"workflow","s":"Aleksei Sukhov","p":"Racket Sports","qb":"Salaries Shared RS","t":5445,"a":{"padel":4628.25,"tt":816.75},"c":{"salary":{"padel":4628.25,"tt":816.75}},"m":{"padel":0.85,"tt":0.15},"d":"Customer Care"},{"id":"HR10141","n":"Mitchie Leslie Rose Trinidad Gotam","r":"Receptionist","f":"front","b":"simon","s":"Simon James Mcguinness","p":"Real Madrid","qb":"Salaries Shared FC","t":4500,"a":{"rm":2250,"pitch":2250},"c":{"salary":{"rm":2250,"pitch":2250}},"m":{"rm":0.5,"pitch":0.5},"d":"Customer Care"},{"id":"PR510","n":"Mohamed","r":"Real Madrid Coach - Part Time Deira","f":"coach","b":"unit","s":"","p":"Real Madrid","qb":"Real Madrid Part Timers","t":1200,"a":{"rm":1200},"c":{"parttime":{"rm":1200}},"m":{"rm":1},"d":"Sport"},{"id":"PR522","n":"Mohamed Medhat","r":"Real Madrid Coach - Part Time Deira","f":"coach","b":"unit","s":"","p":"Real Madrid","qb":"Real Madrid Part Timers","t":2310,"a":{"rm":2310},"c":{"parttime":{"rm":2310}},"m":{"rm":1},"d":"Sport"},{"id":"PR514","n":"Mohamed Sayed","r":"Real Madrid Coach - Part Time Deira","f":"coach","b":"unit","s":"","p":"Real Madrid","qb":"Real Madrid Part Timers","t":600,"a":{"rm":600},"c":{"parttime":{"rm":600}},"m":{"rm":1},"d":"Sport"},{"id":"HR10120","n":"Mohammad Nehal Ibrahim Mohammad Ibrahim Mahmood","r":"ISD Events Coordinator","f":"ops","b":"workflow","s":"Simon James Mcguinness","p":"Pitch Rental & Events","qb":"Salaries","t":9000,"a":{"pitch":9000},"c":{"salary":{"pitch":9000}},"m":{"pitch":1},"d":"Events"},{"id":"PR524","n":"Mosim Khan","r":"Real Madrid Coach - Part Time Deira","f":"coach","b":"unit","s":"","p":"Real Madrid","qb":"Real Madrid Part Timers","t":4000,"a":{"rm":4000},"c":{"parttime":{"rm":4000}},"m":{"rm":1},"d":"Sport"},{"id":"HR10399","n":"Muhammed Kalyebala","r":"Cleaner/ Service Staff","f":"clean","b":"cleaning","s":"Meraly Navarra Zaspa","p":"Shared","qb":"Kickers","t":2932,"a":{"kickers":2932},"c":{"salary":{"kickers":2500},"ot":{"kickers":432}},"m":{"kickers":1},"d":"Cleaner / Service Staff"},{"id":"PR512","n":"Najd","r":"Real Madrid Coach - Part Time","f":"coach","b":"unit","s":"","p":"Real Madrid","qb":"Real Madrid Part Timers","t":1950,"a":{"rm":1950},"c":{"parttime":{"rm":1950}},"m":{"rm":1},"d":"Sport"},{"id":"PR508","n":"Nassem","r":"Real Madrid Coach - Part Time","f":"coach","b":"unit","s":"","p":"Real Madrid","qb":"Real Madrid Part Timers","t":1800,"a":{"rm":1800},"c":{"parttime":{"rm":1800}},"m":{"rm":1},"d":"Sport"},{"id":"HR10011","n":"Naushar Thazhe Punathil Abdul Kader Punathil","r":"PRO","f":"back","b":"headcount","s":"Anjali Mohan","p":"Shared","qb":"Salaries Shared","t":10000,"a":{"rm":2000,"pitch":1000,"padel":1800,"kickers":2800.0,"lf":2000,"rmf":400},"c":{"salary":{"rm":2000,"pitch":1000,"padel":1800,"kickers":2800.0,"lf":2000,"rmf":400}},"m":{"rm":0.2,"pitch":0.1,"padel":0.18,"kickers":0.28,"lf":0.2,"rmf":0.04},"d":"HR, Admin"},{"id":"HR10466","n":"Nina Angela Ng Luna","r":"Cleaner/ Service Staff","f":"clean","b":"cleaning","s":"Meraly Navarra Zaspa","p":"Shared","qb":"Kickers","t":2500,"a":{"kickers":2500},"c":{"salary":{"kickers":2500}},"m":{"kickers":1},"d":"Cleaner / Service Staff"},{"id":"PR520","n":"Nour","r":"Real Madrid Coach - Part Time Deira","f":"coach","b":"unit","s":"","p":"Real Madrid","qb":"Real Madrid Part Timers","t":6000,"a":{"rm":6000},"c":{"parttime":{"rm":6000}},"m":{"rm":1},"d":"Sport"},{"id":"HR10437","n":"Patrick Sserugga","r":"Cleaner/ Service Staff","f":"clean","b":"cleaning","s":"Meraly Navarra Zaspa","p":"ISD","qb":"Kickers","t":2500,"a":{"kickers":2500},"c":{"salary":{"kickers":2500}},"m":{"kickers":1},"d":"Cleaner / Service Staff"},{"id":"HR10321","n":"Pere Antoni Llobera Llull","r":"Real Madrid Coach","f":"coach","b":"unit","s":"Simon James Mcguinness","p":"Real Madrid","qb":"Salaries","t":9300,"a":{"rm":9300},"c":{"salary":{"rm":9000},"pt":{"rm":300}},"m":{"rm":1},"d":"Sport"},{"id":"PR502","n":"Pouria","r":"Real Madrid Coach - Part Time","f":"coach","b":"unit","s":"","p":"Real Madrid","qb":"Real Madrid Part Timers","t":300,"a":{"rm":300},"c":{"parttime":{"rm":300}},"m":{"rm":1},"d":"Sport"},{"id":"HR10460","n":"Richard Konadu","r":"Cleaner/ Service Staff","f":"clean","b":"cleaning","s":"Meraly Navarra Zaspa","p":"Shared","qb":"Salaries Shared","t":2788,"a":{"rm":1059.44,"pitch":1031.56,"padel":697},"c":{"salary":{"rm":950,"pitch":925,"padel":625},"ot":{"rm":109.44,"pitch":106.56,"padel":72}},"m":{"rm":0.38,"pitch":0.37,"padel":0.25},"d":"Cleaner / Service Staff"},{"id":"HR10397","n":"Rizza Duenas Tandoy","r":"Admin Officer","f":"back","b":"workflow","s":"Simon James Mcguinness","p":"Pitch Rental & Events","qb":"Salaries","t":5000,"a":{"pitch":5000},"c":{"salary":{"pitch":5000}},"m":{"pitch":1},"d":"Sport"},{"id":"HR10165","n":"Roman Zhukov","r":"Technical Director","f":"mgmt","b":"workflow","s":"Daniels Petrovs","p":"Pitch Maintenance","qb":"Salaries","t":20600,"a":{"pitch":10300,"ufc":10300},"c":{"salary":{"pitch":9000,"ufc":9000},"transport":{"pitch":1300,"ufc":1300}},"m":{"pitch":0.5,"ufc":0.5},"d":"Repair & Maintenance"},{"id":"HR10246","n":"Sameer Mohammad Naseem Shaikh","r":"Graphic Designer","f":"mkt","b":"simon","s":"Simon James Mcguinness","p":"Football","qb":"Salaries Shared","t":12000,"a":{"rm":4080.0,"pitch":3960,"rmf":3960},"c":{"salary":{"rm":4080.0,"pitch":3960,"rmf":3960}},"m":{"rm":0.34,"pitch":0.33,"rmf":0.33},"d":"Marketing & IT"},{"id":"HR10416","n":"Sara Jammoul","r":"Marketing Manager","f":"mkt","b":"simon","s":"Simon James Mcguinness","p":"ISD","qb":"Salaries Shared","t":18000,"a":{"rm":6120,"pitch":5940,"rmf":5940},"c":{"salary":{"rm":6120,"pitch":5940,"rmf":5940}},"m":{"rm":0.34,"pitch":0.33,"rmf":0.33},"d":"ISD"},{"id":"PR523","n":"Sarah","r":"Table Tennis Part timer","f":"coach","b":"unit","s":"","p":"Table Tennis","qb":"Table Tennis Part Timers","t":2740,"a":{"tt":2740},"c":{"parttime":{"tt":2740}},"m":{"tt":1},"d":"Sport"},{"id":"PR509","n":"Sayouba","r":"Real Madrid Coach - Part Time","f":"coach","b":"unit","s":"","p":"Real Madrid","qb":"Real Madrid Part Timers","t":1800,"a":{"rm":1800},"c":{"parttime":{"rm":1800}},"m":{"rm":1},"d":"Sport"},{"id":"HR10063","n":"Sergio Balsera Rubio","r":"Real Madrid Coach","f":"coach","b":"unit","s":"Simon James Mcguinness","p":"Real Madrid","qb":"Salaries","t":14166,"a":{"rm":14166},"c":{"salary":{"rm":11500},"hra":{"rm":2666}},"m":{"rm":1},"d":"Sport"},{"id":"HR10279","n":"Sevara Dilshat Kizi Sattarova","r":"UBO Staff","f":"ubo","b":"unit","s":"UBO","p":"UBO","qb":"Salaries","t":15000,"a":{"ubo":15000},"c":{"salary":{"ubo":15000}},"m":{"ubo":1},"d":"UBO"},{"id":"HR10123","n":"Shahabuddin Sailuddin","r":"Receptionist","f":"front","b":"workflow","s":"Simon James Mcguinness","p":"Football","qb":"Salaries Shared FC","t":7000,"a":{"pitch":7000},"c":{"salary":{"pitch":7000}},"m":{"pitch":1},"d":"Customer Care"},{"id":"HR10318","n":"Sharanabasava Bheemaraya","r":"Service Staff","f":"clean","b":"cleaning","s":"Meraly Navarra Zaspa","p":"Football","qb":"Salaries Shared FC","t":2742,"a":{"rm":1371,"pitch":1371},"c":{"salary":{"rm":1250,"pitch":1250},"ot":{"rm":121,"pitch":121}},"m":{"rm":0.5,"pitch":0.5},"d":"Service Staff"},{"id":"PR503","n":"Shawky","r":"Real Madrid Coach - Part Time","f":"coach","b":"unit","s":"","p":"Real Madrid","qb":"Real Madrid Part Timers","t":4350,"a":{"rm":4350},"c":{"parttime":{"rm":4350}},"m":{"rm":1},"d":"Sport"},{"id":"HR10488","n":"Sheryl Costan Penido","r":"Cleaner/ Service Staff","f":"clean","b":"workflow","s":"","p":"Shared","qb":"Salaries Shared","t":3175,"a":{"ufc":3175},"c":{"salary":{"ufc":3000},"ot":{"ufc":175}},"m":{"ufc":1},"d":"Cleaner / Service Staff"},{"id":"HR10432","n":"Shiela M A Bangkil","r":"Customer care Executive","f":"front","b":"unit","s":"Simon James Mcguinness","p":"Real Madrid","qb":"Salaries","t":4500,"a":{"rm":4500},"c":{"salary":{"rm":4500}},"m":{"rm":1},"d":"Cleaner / Service Staff"},{"id":"HR10014","n":"Shihab Kunhipara Hamza Kunhipara","r":"Operations","f":"ops","b":"workflow","s":"Simon James Mcguinness","p":"Football","qb":"Salaries Shared FC","t":6000,"a":{"pitch":6000},"c":{"salary":{"pitch":6000}},"m":{"pitch":1},"d":"Sport Helper"},{"id":"HR10401","n":"Shoaib Hussain","r":"Driver","f":"ops","b":"workflow","s":"Anjali Mohan","p":"ISD","qb":"Salaries Shared ISD","t":3500,"a":{"rm":1225,"pitch":875,"padel":1050,"tt":350},"c":{"salary":{"rm":1225,"pitch":875,"padel":1050,"tt":350}},"m":{"rm":0.35,"pitch":0.25,"padel":0.3,"tt":0.1},"d":"ISD"},{"id":"HR10074","n":"Simon James Mcguinness","r":"General Manager","f":"mgmt","b":"simon","s":"Daniels Petrovs","p":"Football","qb":"Salaries Shared","t":40000,"a":{"rm":13600.0,"pitch":13200,"rmf":13200},"c":{"salary":{"rm":13600.0,"pitch":13200,"rmf":13200}},"m":{"rm":0.34,"pitch":0.33,"rmf":0.33},"d":"Sport"},{"id":"PR519","n":"Sohail","r":"Real Madrid Coach - Part Time","f":"coach","b":"unit","s":"","p":"Real Madrid","qb":"Real Madrid Part Timers","t":6500,"a":{"rm":6500},"c":{"parttime":{"rm":6500}},"m":{"rm":1},"d":"Sport"},{"id":"HR10163","n":"Tej Narayan Tajpuriya","r":"Service Staff","f":"clean","b":"unit","s":"","p":"Kickers","qb":"Kickers","t":2894,"a":{"kickers":2894},"c":{"salary":{"kickers":2500},"ot":{"kickers":394}},"m":{"kickers":1},"d":"Service Staff"},{"id":"PR621","n":"Temirlan Maksatovich Aidarbekov","r":"Customer Care Executive","f":"front","b":"workflow","s":"","p":"Racket Sports","qb":"Salaries","t":3116.08,"a":{"padel":3116.08},"c":{"salary":{"padel":2666.08},"commission":{"padel":450}},"m":{"padel":1},"d":"Customer Care"},{"id":"HR10149","n":"Vanessa Namia Sanisit","r":"Front Desk Executive","f":"front","b":"workflow","s":"Aleksei Sukhov","p":"Racket Sports","qb":"Salaries Shared RS","t":5401,"a":{"padel":4590.85,"tt":810.15},"c":{"salary":{"padel":4207.5,"tt":742.5},"commission":{"padel":383.35,"tt":67.65}},"m":{"padel":0.85,"tt":0.15},"d":"Customer Care"},{"id":"HR10294","n":"Vicente Lopez Martinez","r":"Padel Coach","f":"coach","b":"unit","s":"Aleksei Sukhov","p":"Padel","qb":"Salaries","t":19195,"a":{"padel":19195},"c":{"salary":{"padel":6000},"commission":{"padel":13195}},"m":{"padel":1},"d":"Sport"},{"id":"HR10174","n":"Vishnu Prakash","r":"Technical Staff","f":"ops","b":"workflow","s":"Roman","p":"Shared","qb":"Salaries Shared","t":4000,"a":{"rm":640,"pitch":600,"padel":920,"kickers":920,"lf":920},"c":{"salary":{"rm":640,"pitch":600,"padel":920,"kickers":920,"lf":920}},"m":{"rm":0.16,"pitch":0.15,"padel":0.23,"kickers":0.23,"lf":0.23},"d":"Repair & Maintenance"},{"id":"HR10126","n":"Vishnu Verma Kamlesh Kumar Verma","r":"Footlab Operation Manager","f":"mgmt","b":"simon","s":"Simon James Mcguinness","p":"Football","qb":"Salaries Shared FC","t":15000,"a":{"rm":7500,"pitch":7500},"c":{"salary":{"rm":7500,"pitch":7500}},"m":{"rm":0.5,"pitch":0.5},"d":"Sport"},{"id":"HR10193","n":"Yulia Prokhorova","r":"Table Tennis Coach","f":"coach","b":"unit","s":"Aleksei Sukhov","p":"Table Tennis","qb":"Salaries","t":18463,"a":{"tt":18463},"c":{"salary":{"tt":1000},"commission":{"tt":17463}},"m":{"tt":1},"d":"Sport"},{"id":"HR10407","n":"Yunusu Lwanyaga","r":"Cleaner/ Service Staff","f":"clean","b":"cleaning","s":"Meraly Navarra Zaspa","p":"Racket Sports","qb":"Salaries Shared RS","t":2700,"a":{"padel":2295,"tt":405},"c":{"salary":{"padel":2125,"tt":375},"ot":{"padel":170,"tt":30}},"m":{"padel":0.85,"tt":0.15},"d":"Cleaner / Service Staff"},{"id":"HR10382","n":"Yves Vianey Ngangnan","r":"Field Staff – Operation ISD","f":"ops","b":"simon","s":"Simon James Mcguinness","p":"ISD","qb":"Salaries Shared ISD","t":5000,"a":{"pitch":3350,"padel":1650},"c":{"salary":{"pitch":3350,"padel":1650}},"m":{"pitch":0.67,"padel":0.33},"d":"Repair & Maintenance"},{"id":"HR10262","n":"Ziad Ouaziz","r":"Sales & Development Executive","f":"mkt","b":"workflow","s":"Simon James Mcguinness","p":"Football","qb":"Salaries Shared FC","t":7000,"a":{"pitch":7000},"c":{"salary":{"pitch":7000}},"m":{"pitch":1},"d":"Sales & Development"},{"id":"PR623","n":"Edward Akomaning","r":"","f":"clean","b":"cleaning","s":"","p":"Shared","qb":"Salaries Shared","t":3069,"a":{"rm":1534.5,"pitch":1534.5},"c":{"salary":{"rm":1534.5,"pitch":1534.5}},"m":{"rm":0.5,"pitch":0.5},"d":"Cleaner / Service Staff"},{"id":"PR624","n":"Gidion Muddu","r":"","f":"clean","b":"cleaning","s":"","p":"Shared","qb":"Salaries Shared","t":3000,"a":{"rm":1500,"pitch":1500},"c":{"salary":{"rm":1500,"pitch":1500}},"m":{"rm":0.5,"pitch":0.5},"d":"Cleaner / Service Staff"},{"id":"PR625","n":"Peter Gathecha Wangui","r":"","f":"clean","b":"cleaning","s":"","p":"Shared","qb":"Salaries Shared","t":3000,"a":{"rm":1500,"pitch":1500},"c":{"salary":{"rm":1500,"pitch":1500}},"m":{"rm":0.5,"pitch":0.5},"d":"Cleaner / Service Staff"},{"id":"PR626","n":"Hazel Osila Palenzuela","r":"","f":"clean","b":"cleaning","s":"","p":"Shared","qb":"Salaries Shared","t":2800,"a":{"rm":1400,"pitch":1400},"c":{"salary":{"rm":1400,"pitch":1400}},"m":{"rm":0.5,"pitch":0.5},"d":"Cleaner / Service Staff"},{"id":"PR627","n":"Kent Joshua Lagutang Laguardia","r":"","f":"clean","b":"cleaning","s":"","p":"Shared","qb":"Salaries Shared","t":2800,"a":{"rm":1400,"pitch":1400},"c":{"salary":{"rm":1400,"pitch":1400}},"m":{"rm":0.5,"pitch":0.5},"d":"Cleaner / Service Staff"},{"id":"PR628","n":"Jhune Jhune Bagauisan Ardales","r":"","f":"clean","b":"cleaning","s":"","p":"Shared","qb":"Salaries Shared","t":2869,"a":{"rm":1434.5,"pitch":1434.5},"c":{"salary":{"rm":1434.5,"pitch":1434.5}},"m":{"rm":0.5,"pitch":0.5},"d":"Cleaner / Service Staff"},{"id":"PR629","n":"Karina Markova","r":"","f":"other","b":"workflow","s":"","p":"Padel","qb":"Salaries Shared","t":2573,"a":{"padel":2058.4,"tt":514.6},"c":{"salary":{"padel":2058.4,"tt":514.6}},"m":{"padel":0.8,"tt":0.2},"d":"Не указан в файле"},{"id":"ADHOC","n":"Wael Mourad","r":"Legal advisor · Adhoc Corporate Services","f":"legal","b":"adhoc","s":"","p":"Shared","qb":"Legal and professional fees","t":20000.0,"a":{"rm":3340.3,"pitch":3340.3,"padel":3159.4,"tt":580.0,"ufc":1580.0,"kickers":3000.0,"lf":3000.0,"caff":600.0,"rmf":1400.0},"c":{"legal":{"rm":3340.3,"pitch":3340.3,"padel":3159.4,"tt":580.0,"ufc":1580.0,"kickers":3000.0,"lf":3000.0,"caff":600.0,"rmf":1400.0}},"m":{"rm":0.167015,"pitch":0.167015,"padel":0.15797,"tt":0.029,"ufc":0.079,"kickers":0.15,"lf":0.15,"caff":0.03,"rmf":0.07},"d":"Legal"}]</script>
+<script>
+(() => {
+  const E = JSON.parse(document.getElementById('data').textContent);
+  const UNITS = [
+    {k:'rm', n:'Real Madrid (ISD)', s:'RM', g:'Football'},
+    {k:'pitch', n:'Pitch, Events & Track', s:'Pitch', g:'Football'},
+    {k:'rmf', n:'RMF — новые локации', s:'RMF', g:'RMF'},
+    {k:'padel', n:'Padel', s:'Padel', g:'Racket Sports'},
+    {k:'tt', n:'Table Tennis', s:'TT', g:'Racket Sports'},
+    {k:'kickers', n:'Kickers', s:'Kickers', g:'F&B'},
+    {k:'lf', n:'La Famiglia', s:'LF', g:'F&B'},
+    {k:'caff', n:'Caffelini', s:'Caff.', g:'F&B'},
+    {k:'ubo', n:'UBO', s:'UBO', g:'UBO и UFC'},
+    {k:'ufc', n:'United FC', s:'UFC', g:'UBO и UFC'}
+  ];
+  const UN = Object.fromEntries(UNITS.map(u => [u.k, u]));
+  const BASIS = {
+    unit: ['Юнит сотрудника', 'As per Unit', 'По юниту, где сотрудник основной и выполняет обязанности'],
+    workflow: ['По загрузке', 'As per Workflow', 'По объёму работы и вкладу сотрудника в каждый юнит или департамент'],
+    simon: ['Решение GM Football', 'As per Simon', 'Доли определяет Simon для сотрудников, которые подчиняются ему напрямую или работают под его руководством'],
+    aleksei: ['Решение GM Racket Sports', 'As per Aleksei Email', 'По инструкциям и процентам из письма Aleksei'],
+    cleaning: ['Клининг: распределение HR', 'As per Anjali Email', 'По закреплению клинингового персонала и процентам из письма Anjali'],
+    cleanshare: ['Доля клининга', 'No. of Cleaning Staff %', 'Housekeeping Manager и ассистент — пропорционально доле клинеров юнита в общем клининговом штате'],
+    headcount: ['По численности', 'Number of Employees', 'По числу сотрудников компании, департамента или юнита; в основном для HR и PRO'],
+    adhoc: ['Распределение Adhoc', 'Legal Fee Distribution', 'Ежемесячный счёт Adhoc по таблице распределения юридических услуг: 60% юнитам ISD, 40% Kickers, LF, Caffelini и RMF']
+  };
+  const COMPS = [['salary','Пакет'],['commission','Комиссии'],['parttime','Part-time'],['hra','Жильё (HRA)'],['pt','Персон. тренировки'],['ot','Сверхурочные'],['transport','Транспорт'],['mobile','Связь'],['legal','Ретейнер Adhoc']];
+
+  const fmt = v => Math.round(v).toLocaleString('en-US');
+  const fmt2 = v => (Math.round(v * 100) / 100).toLocaleString('en-US', {minimumFractionDigits: 0, maximumFractionDigits: 2});
+  const pct = v => (v*100 >= 9.95 ? Math.round(v*100) : (v*100).toFixed(1).replace('.0','')) + '%';
+  const el = (tag, attrs = {}, ...kids) => { const n = document.createElement(tag); for (const [k,v] of Object.entries(attrs)) { if (k === 'class') n.className = v; else if (k === 'text') n.textContent = v; else if (k === 'style') n.style.cssText = v; else n.setAttribute(k, v); } for (const c of kids) if (c != null) n.append(c); return n; };
+
+  E.forEach(e => { e.nu = Object.keys(e.a).length; e.multi = e.nu > 1; e.ext = e.id === 'ADHOC'; });
+  const byNuT = (a, b) => (b.nu - a.nu) || (b.t - a.t);
+  const staff = E.filter(e => !e.ext), ext = E.filter(e => e.ext);
+  const PAY = staff.reduce((s,e) => s + e.t, 0), EXT = ext.reduce((s,e) => s + e.t, 0);
+  const TOTAL = PAY + EXT;
+  const shared = E.filter(e => e.multi);
+  const SHARED = shared.reduce((s,e) => s + e.t, 0);
+  const byUnit = Object.fromEntries(UNITS.map(u => [u.k, {own:0, sh:0}]));
+  E.forEach(e => Object.entries(e.a).forEach(([k,v]) => { if (e.multi) byUnit[k].sh += v; else byUnit[k].own += v; }));
+  const allocSum = Object.values(byUnit).reduce((s,b) => s + b.own + b.sh, 0);
+  const allUnits = shared.filter(e => e.nu >= 7);
+
+  let unitFilter = null;
+
+  // lead + kpis
+  document.getElementById('lead').append('За сентябрь на ', el('b',{text: UNITS.length + ' юнитов'}), ' разнесено ', el('b',{text: fmt(TOTAL) + ' AED'}), ': ФОТ ' + staff.length + ' сотрудников ' + fmt(PAY) + ' AED и ретейнер Adhoc ' + fmt(EXT) + ' AED. ', el('b',{text: pct(SHARED/TOTAL)}), ' суммы делится между юнитами по ключам.');
+  const kpi = (lab, v, unit, s, dark) => el('div', {class: 'kpi' + (dark ? ' dark' : '')}, el('span',{class:'eyebrow',text:lab}), el('div',{class:'v num'}, v, unit ? el('small',{text:unit}) : null), el('div',{class:'s',text:s}));
+  document.getElementById('kpis').append(
+    kpi('Разнесено за сентябрь', fmt(TOTAL), 'AED', 'ФОТ ' + fmt(PAY) + ' + Adhoc ' + fmt(EXT)),
+    kpi('Сотрудники', String(staff.length), null, staff.filter(e=>!e.multi).length + ' в одном юните · ' + staff.filter(e=>e.multi).length + ' в нескольких'),
+    kpi('Делится по ключам', fmt(SHARED), 'AED', pct(SHARED/TOTAL) + ' затрат · ' + shared.length + ' позиций', true),
+    kpi('На 7+ юнитов', fmt(allUnits.reduce((s,e)=>s+e.t,0)), 'AED', allUnits.length + ' позиций бэк-офиса работают почти на все проекты')
+  );
+
+  // method example: the person split across the most units, then highest pay
+  function calcTable(e) {
+    const us = UNITS.filter(u => e.a[u.k]);
+    const t = el('table');
+    const hr = el('tr', {}, el('th',{text:'Выплата'}), el('th',{class:'r',text:'Сумма'}), ...us.map(u => el('th',{class:'r',text:u.s})));
+    const pr = el('tr',{class:'pct'}, el('td',{text: e.ext ? 'Ключ (Legal Fee Distribution)' : 'Ключ из мастера'}), el('td',{class:'r',text:'100%'}), ...us.map(u => el('td',{class:'r',text: e.m[u.k] ? pct(e.m[u.k]) : '—'})));
+    const tb = el('tbody', {}, pr);
+    COMPS.forEach(([k,l]) => { const d = e.c[k]; if (!d) return; const s = Object.values(d).reduce((a,b)=>a+b,0); tb.append(el('tr',{}, el('td',{text:l}), el('td',{class:'r',text:fmt2(s)}), ...us.map(u => el('td',{class:'r',text: d[u.k] ? fmt2(d[u.k]) : '—'})))); });
+    const ft = el('tfoot',{}, el('tr',{}, el('td',{text:'Итого на юнит'}), el('td',{class:'r',text:fmt2(e.t)}), ...us.map(u => el('td',{class:'r',text:fmt2(e.a[u.k])}))));
+    t.append(el('thead',{}, hr), tb, ft);
+    return t;
+  }
+  const exE = staff.find(e => e.id === 'HR10253') || staff.slice().sort(byNuT)[0];
+  document.getElementById('ex-title').textContent = 'Пример: ' + exE.n + ' (' + exE.r + ') — ' + exE.nu + ' юнитов, основание «' + BASIS[exE.b][0] + '»';
+  document.getElementById('ex').replaceWith(calcTable(exE));
+
+  // shared sort helpers: primary column, then units count desc, then amount desc
+  const sortKey = (e, k) => k === 'b' ? BASIS[e.b][0] : e[k];
+  const sorter = st => (a, b) => { const x = sortKey(a, st.k), y = sortKey(b, st.k); const c = (typeof x === 'number' ? x - y : String(x || '').localeCompare(String(y || ''))) * st.dir; return c || byNuT(a, b); };
+  function sortTh(k, label, cls, st, redraw) {
+    const th = el('th',{class: cls});
+    if (st.k === k) th.setAttribute('aria-sort', st.dir > 0 ? 'ascending' : 'descending');
+    const b = el('button',{type:'button',text:label});
+    b.addEventListener('click', () => { if (st.k === k) st.dir = -st.dir; else { st.k = k; st.dir = (k === 't' || k === 'nu') ? -1 : 1; } redraw(); });
+    th.append(b); return th;
+  }
+  const mxSort = {k:'nu', dir:-1};
+
+  // matrix
+  let mxMode = 'pct', basisFilter = null;
+  const bChips = document.getElementById('basis-chips');
+  const mkChip = (k, label) => { const c = el('button',{class:'chip',type:'button','aria-pressed': String(basisFilter === k), text: label}); c.addEventListener('click', () => { basisFilter = k; drawMatrix(); }); return c; };
+  const nuBadge = n => el('span',{class:'nu' + (n >= 7 ? ' hi' : ''), text:String(n)});
+  const mx = document.getElementById('matrix');
+  function drawMatrix() {
+    bChips.replaceChildren(mkChip(null, 'Все основания · ' + shared.length), ...Object.keys(BASIS).filter(k => shared.some(e => e.b === k)).map(k => mkChip(k, BASIS[k][0] + ' · ' + shared.filter(e => e.b === k).length)));
+    const rows = shared.filter(e => (!basisFilter || e.b === basisFilter) && (!unitFilter || e.a[unitFilter])).sort(sorter(mxSort));
+    const hr = el('tr');
+    [['n','Сотрудник',''],['nu','Юнитов','c'],['d','Департамент',''],['b','Основание',''],['t','Итого, AED','r']].forEach(([k,l,c]) => hr.append(sortTh(k, l, c, mxSort, () => drawMatrix())));
+    let g = null;
+    UNITS.forEach(u => { hr.append(el('th',{class:'u' + (u.g !== g ? ' gstart' : ''), text:u.s, title:u.n})); g = u.g; });
+    const tb = el('tbody');
+    rows.forEach(e => {
+      const tr = el('tr');
+      tr.append(el('td',{}, el('div',{class:'who'}, el('b',{text:e.n}), el('span',{text:e.r || '—'}))), el('td',{class:'c'}, nuBadge(e.nu)), el('td',{class:'wr',text:e.d}), el('td',{}, el('span',{class:'badge',text:BASIS[e.b][0]})), el('td',{class:'r',text:fmt(e.t)}));
+      let gg = null;
+      UNITS.forEach(u => {
+        const v = e.a[u.k] || 0, sh = v / e.t;
+        const td = el('td',{class:'u' + (u.g !== gg ? ' gstart' : '') + (v ? '' : ' z')}); gg = u.g;
+        if (v) { td.textContent = mxMode === 'pct' ? pct(sh) : fmt(v); td.style.background = `rgba(245,176,20,${(0.08 + sh*0.62).toFixed(3)})`; if (u.k === unitFilter) td.style.boxShadow = 'inset 0 0 0 1.5px #111'; }
+        else td.textContent = '·';
+        tr.append(td);
+      });
+      tb.append(tr);
+    });
+    const sumT = rows.reduce((s,e)=>s+e.t,0);
+    const fr = el('tr', {}, el('td',{text:'Итого · ' + rows.length}), el('td'), el('td'), el('td'), el('td',{class:'r',text:fmt(sumT)}));
+    let g3 = null;
+    UNITS.forEach(u => { const v = rows.reduce((s,e)=>s+(e.a[u.k]||0),0); fr.append(el('td',{class:'u' + (u.g !== g3 ? ' gstart' : ''), text: v ? (mxMode === 'pct' ? pct(v/sumT) : fmt(v)) : '·'})); g3 = u.g; });
+    mx.replaceChildren(el('thead',{}, hr), tb, el('tfoot',{}, fr));
+  }
+  const bPct = document.getElementById('mx-pct'), bAed = document.getElementById('mx-aed');
+  bPct.addEventListener('click', () => { mxMode = 'pct'; bPct.setAttribute('aria-pressed','true'); bAed.setAttribute('aria-pressed','false'); drawMatrix(); });
+  bAed.addEventListener('click', () => { mxMode = 'aed'; bAed.setAttribute('aria-pressed','true'); bPct.setAttribute('aria-pressed','false'); drawMatrix(); });
+
+  // bases
+  (() => {
+    const agg = Object.keys(BASIS).map(k => { const xs = E.filter(e => e.b === k); return {k, n: xs.length, ns: xs.filter(e=>e.multi).length, t: xs.reduce((s,e)=>s+e.t,0)}; }).filter(x => x.n).sort((a,b) => b.t - a.t);
+    const mxv = Math.max(...agg.map(a => a.t));
+    const tb = el('tbody');
+    agg.forEach(a => tb.append(el('tr',{}, el('td',{}, el('b',{text:BASIS[a.k][0]}), el('span',{class:'raw',text:'В файле: ' + BASIS[a.k][1]}), el('span',{class:'desc',text:BASIS[a.k][2] + (a.ns ? '. Делятся: ' + a.ns : '')})), el('td',{class:'r',text:String(a.n)}), el('td',{class:'r',text:fmt(a.t)}), el('td',{class:'hcell'}, el('div',{style:'display:flex;align-items:center;gap:8px'}, el('div',{class:'hbar',style:`width:${a.t/mxv*100}%`}), el('span',{class:'num',style:'font-size:12px;color:var(--ink-3)',text:pct(a.t/TOTAL)}))))));
+    document.getElementById('bases').replaceChildren(el('thead', {}, el('tr', {}, el('th',{text:'Основание'}), el('th',{class:'r',text:'Поз.'}), el('th',{class:'r',text:'AED'}), el('th',{class:'hcell',text:'Доля'}))), tb, el('tfoot',{}, el('tr',{}, el('td',{text:'Итого'}), el('td',{class:'r',text:String(E.length)}), el('td',{class:'r',text:fmt(TOTAL)}), el('td'))));
+  })();
+
+  // departments
+  (() => {
+    const agg = [...new Set(E.map(e => e.d))].map(k => { const xs = E.filter(e => e.d === k); return {k, n: xs.length, t: xs.reduce((s,e)=>s+e.t,0), sh: xs.filter(e=>e.multi).reduce((s,e)=>s+e.t,0)}; }).sort((a,b) => (b.sh/b.t - a.sh/a.t) || (b.t - a.t));
+    const tb = el('tbody');
+    agg.forEach(a => tb.append(el('tr',{}, el('td',{}, el('b',{text:a.k})), el('td',{class:'r',text:String(a.n)}), el('td',{class:'r',text:fmt(a.t)}), el('td',{class:'r',text:fmt(a.t/a.n)}), el('td',{class:'r',text: a.sh ? pct(a.sh/a.t) : '—'}))));
+    document.getElementById('funcs').replaceChildren(el('thead', {}, el('tr', {}, el('th',{text:'Департамент'}), el('th',{class:'r',text:'Поз.'}), el('th',{class:'r',text:'AED'}), el('th',{class:'r',text:'Средняя'}), el('th',{class:'r',text:'Доля общих'}))), tb, el('tfoot',{}, el('tr',{}, el('td',{text:'Итого'}), el('td',{class:'r',text:String(E.length)}), el('td',{class:'r',text:fmt(TOTAL)}), el('td',{class:'r',text:fmt(TOTAL/E.length)}), el('td',{class:'r',text:pct(SHARED/TOTAL)}))));
+  })();
+
+  // components
+  (() => {
+    const used = COMPS.filter(([k]) => E.some(e => e.c[k]));
+    const tb = el('tbody');
+    const col = Object.fromEntries(used.map(([k]) => [k, 0]));
+    UNITS.forEach(u => {
+      let rt = 0;
+      const cells = used.map(([k]) => { const v = E.reduce((s,e) => s + ((e.c[k] || {})[u.k] || 0), 0); col[k] += v; rt += v; return el('td',{class:'r',text: v ? fmt(v) : '—'}); });
+      tb.append(el('tr',{}, el('td',{}, el('b',{text:u.n})), ...cells, el('td',{class:'r',style:'font-weight:700',text:fmt(rt)})));
+    });
+    const gt = Object.values(col).reduce((s,v)=>s+v,0);
+    document.getElementById('comps').replaceChildren(el('thead', {}, el('tr', {}, el('th',{text:'Юнит'}), ...used.map(([,l]) => el('th',{class:'r',text:l})), el('th',{class:'r',text:'Итого'}))), tb, el('tfoot',{}, el('tr',{}, el('td',{text:'Итого'}), ...used.map(([k]) => el('td',{class:'r',text:fmt(col[k])})), el('td',{class:'r',text:fmt(gt)}))));
+  })();
+
+  // register
+  const reg = document.getElementById('reg'), q = document.getElementById('q'), fU = document.getElementById('f-unit'), fF = document.getElementById('f-func'), cnt = document.getElementById('count');
+  fU.append(new Option('Все юниты', ''), ...UNITS.map(u => new Option(u.n, u.k)));
+  fF.append(new Option('Все департаменты', ''), ...[...new Set(E.map(e => e.d))].sort((a,b) => a.localeCompare(b)).map(d => new Option(d, d)));
+  let sort = {k:'nu', dir:-1};
+  const open = new Set();
+  const COLS = [['n','Сотрудник'],['nu','Юнитов'],['d','Департамент'],['b','Основание'],['s','Руководитель'],['qb','Счёт QB'],['t','Сумма, AED'],['a','Распределение']];
+  function drawReg() {
+    const s = q.value.trim().toLowerCase(), uf = fU.value, ff = fF.value;
+    const rows = E.filter(e => (!uf || e.a[uf]) && (!ff || e.d === ff) && (!s || [e.n, e.r, e.s, e.id, e.d].join(' ').toLowerCase().includes(s)));
+    rows.sort(sorter(sort));
+    const hr = el('tr');
+    COLS.forEach(([k,l]) => {
+      const th = el('th',{class: k === 't' ? 'r' : k === 'nu' ? 'c' : ''});
+      if (k !== 'a') {
+        if (sort.k === k) th.setAttribute('aria-sort', sort.dir > 0 ? 'ascending' : 'descending');
+        const b = el('button',{type:'button',text:l});
+        b.addEventListener('click', () => { sort = sort.k === k ? {k, dir: -sort.dir} : {k, dir: (k === 't' || k === 'nu') ? -1 : 1}; drawReg(); });
+        th.append(b);
+      } else th.textContent = l;
+      hr.append(th);
+    });
+    const tb = el('tbody');
+    rows.forEach(e => {
+      const sp = el('div',{class:'split'});
+      UNITS.filter(u => e.a[u.k]).sort((x,y) => e.a[y.k] - e.a[x.k]).forEach(u => sp.append(el('span',{class: u.k === uf ? 'hit' : '', text: u.s + (e.multi ? ' ' + pct(e.a[u.k]/e.t) : '')})));
+      const btn = el('button',{type:'button', class:'exp', 'aria-expanded': String(open.has(e.id)), text:'Расчёт'});
+      btn.addEventListener('click', () => { open.has(e.id) ? open.delete(e.id) : open.add(e.id); drawReg(); });
+      tb.append(el('tr',{}, el('td',{}, el('div',{class:'who'}, el('b',{text:e.n}), el('span',{text:(e.r || '—') + (e.ext ? '' : ' · ' + e.id)}), e.ext ? el('span',{class:'ext',text:'Внешний консультант'}) : null, btn)), el('td',{class:'c'}, nuBadge(e.nu)), el('td',{class:'wr',text:e.d}), el('td',{}, el('span',{class:'badge',text:BASIS[e.b][0]})), el('td',{class:'wr',text:e.s || '—'}), el('td',{class:'wr',text:e.qb}), el('td',{class:'r',text:fmt(e.t)}), el('td',{}, sp)));
+      if (open.has(e.id)) {
+        const note = el('p',{text:'Основание: ' + BASIS[e.b][0] + ' (' + BASIS[e.b][1] + '). ' + BASIS[e.b][2] + '.' + (e.s ? ' Руководитель: ' + e.s + '.' : '')});
+        tb.append(el('tr',{class:'det'}, el('td',{colspan:String(COLS.length)}, el('div',{class:'calc'}, note, el('div',{class:'tbox'}, calcTable(e))))));
+      }
+    });
+    const sum = rows.reduce((s,e) => s + (uf ? e.a[uf] : e.t), 0);
+    const ft = el('tfoot',{}, el('tr',{}, el('td',{text:'Итого · ' + rows.length}), el('td'), el('td'), el('td'), el('td'), el('td'), el('td',{class:'r',text:fmt(rows.reduce((s,e)=>s+e.t,0))}), el('td',{text: uf ? 'на ' + UN[uf].s + ': ' + fmt(sum) + ' AED' : ''})));
+    reg.replaceChildren(el('thead',{}, hr), tb, ft);
+    cnt.textContent = rows.length + ' из ' + E.length;
+  }
+  q.addEventListener('input', drawReg);
+  fU.addEventListener('change', () => setUnit(fU.value || null, true));
+  fF.addEventListener('change', drawReg);
+
+  const pill = document.getElementById('mx-unitpill');
+  function setUnit(k, fromSelect) {
+    unitFilter = k;
+    if (!fromSelect) fU.value = k || '';
+    if (k) { const x = el('button',{type:'button','aria-label':'Снять фильтр',text:'×'}); x.addEventListener('click', () => setUnit(null)); pill.replaceChildren('Юнит: ' + UN[k].n, x); pill.hidden = false; }
+    else pill.hidden = true;
+    drawMatrix(); drawReg();
+  }
+
+  document.getElementById('recon').textContent = 'Сверка: сумма по юнитам ' + fmt(allocSum) + ' AED = ФОТ ' + fmt(PAY) + ' AED + ретейнер Adhoc ' + fmt(EXT) + ' AED.';
+  drawMatrix(); drawReg();
+})();
+</script>
+
+</body></html>
